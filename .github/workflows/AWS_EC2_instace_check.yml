@@ -38,5 +38,4 @@ jobs:
        run: aws iam list-users --output table
        
      - name: AWS list EC 2 instances
-       run: aws ec2 describe-instances --filters Name=tag-key,Values=Name --query "Reservations[*].Instances[*].{Instance:InstanceId,AZ:Placement.AvailabilityZone,Name:Tags[?Key=='Name']|[0].Value}"  --output table
-	   
+       run: aws ec2 describe-instances --output table
