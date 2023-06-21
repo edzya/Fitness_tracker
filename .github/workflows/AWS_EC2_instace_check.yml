@@ -39,4 +39,6 @@ jobs:
        run: aws iam list-users --output table
        
      - name: AWS list EC 2 instances
-       run: aws ec2 describe-instances --output table
+       run: |
+          aws configure set region us-west-1
+          aws ec2 describe-instances --output table
