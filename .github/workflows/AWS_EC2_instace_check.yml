@@ -1,0 +1,42 @@
+name: AWS EC2 instace check
+
+on:
+  workflow_dispatch:
+    inputs:
+      copy-changes:
+        description: 'Check ec2 instances'
+
+jobs:
+  copy-changes:
+    runs-on: ubuntu-latest
+
+    steps:
+     - name: Set up AWS credentials
+       env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.Access_key }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.key_secret }}
+       run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+      
+     - name: Look up for date
+       run: date
+        
+     - name: Print github.actor
+       run: echo ${{ github.actor }}
+        
+     - name: Linux version
+       run: lsb_release -a
+      
+     - name: AWS version
+       run: aws --version
+        
+     - name: Where located AWS
+       run: which aws
+        
+     - name: AWS list users
+       run: aws iam list-users --output table
+       
+     - name: AWS list EC 2 instances
+       run: aws ec2 describe-instances --filters Name=tag-key,Values=Name --query "Reservations[*].Instances[*].{Instance:InstanceId,AZ:Placement.AvailabilityZone,Name:Tags[?Key=='Name']|[0].Value}"  --output table
+	   
