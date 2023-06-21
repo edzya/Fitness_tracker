@@ -19,6 +19,7 @@ jobs:
        run: |
           aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
           aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set region us-west-1
       
      - name: Look up for date
        run: date
@@ -35,10 +36,5 @@ jobs:
      - name: Where located AWS
        run: which aws
         
-     - name: AWS list users
-       run: aws iam list-users --output table
-       
      - name: AWS list EC 2 instances
-       run: |
-          aws configure set region us-west-1
-          aws ec2 describe-instances --output table
+       run: aws ec2 describe-instances --output table
