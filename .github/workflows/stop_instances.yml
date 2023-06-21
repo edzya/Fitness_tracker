@@ -1,0 +1,40 @@
+name: AWS EC2 STOP instaces
+
+on:
+  workflow_dispatch:
+    inputs:
+      copy-changes:
+        description: 'STOP ec2 instances'
+
+jobs:
+  copy-changes:
+    runs-on: ubuntu-latest
+    environment: AWS
+
+    steps:
+     - name: Set up AWS credentials
+       env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.KEY_SECRET }}
+       run: |
+          aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          aws configure set region us-west-1
+      
+     - name: Look up for date
+       run: date
+        
+     - name: Print github.actor
+       run: echo ${{ github.actor }}
+        
+     - name: Linux version
+       run: lsb_release -a
+      
+     - name: AWS version
+       run: aws --version
+        
+     - name: Where located AWS
+       run: which aws
+        
+     - name: AWS STOP EC 2 instances
+       run: aws ec2 stop-instances --instance-ids i-01682617f7df18439 i-06682c796eff02d06 --output text
