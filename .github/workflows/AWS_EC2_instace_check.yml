@@ -37,4 +37,4 @@ jobs:
        run: which aws
         
      - name: AWS list EC 2 instances
-       run: aws ec2 describe-instances --output table
+       run: aws ec2 describe-instances --filters Name=tag-key,Values=Name --query "Reservations[*].Instances[*].{Instance:InstanceId,State:State.Name}"  --output text
